@@ -1,0 +1,105 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile data for authenticated Montana AI operators.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Authenticated user identifier" },
+        "displayName": { "type": "string", "description": "Display name of the user" },
+        "email": { "type": "string", "description": "User email address" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when user profile was created" },
+        "lastActiveAt": { "type": "string", "format": "date-time", "description": "Timestamp when user was last active" }
+      },
+      "required": ["userId", "displayName", "createdAt"]
+    },
+    "ChatSessionDoc": {
+      "title": "ChatSessionDoc",
+      "description": "Metadata for a Montana AI chat operation session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique session identifier" },
+        "userId": { "type": "string", "description": "Owner user identifier" },
+        "title": { "type": "string", "description": "Title of the chat operation" },
+        "lastMessagePreview": { "type": "string", "description": "Snippet of the last message sent or received" },
+        "messageCount": { "type": "integer", "description": "Number of messages in the session" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Last update timestamp" }
+      },
+      "required": ["id", "userId", "title", "lastMessagePreview", "messageCount", "createdAt"]
+    },
+    "ChatMessageDoc": {
+      "title": "ChatMessageDoc",
+      "description": "A single chat message exchange in a session.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique message ID" },
+        "userId": { "type": "string", "description": "Owner user identifier" },
+        "sender": { "type": "string", "enum": ["USER", "MONTANA", "SYSTEM"], "description": "Role of the sender" },
+        "content": { "type": "string", "description": "Message textual content" },
+        "toolCalls": { "type": "array", "description": "List of invoked AI tool names" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "userId", "sender", "content", "createdAt"]
+    },
+    "AiToolDoc": {
+      "title": "AiToolDoc",
+      "description": "Dynamic auxiliary tool registered for the Montana AI arsenal.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique tool ID" },
+        "userId": { "type": "string", "description": "Owner user identifier" },
+        "name": { "type": "string", "description": "Name of the tool" },
+        "tagline": { "type": "string", "description": "Short description" },
+        "purpose": { "type": "string", "description": "Purpose and objective of this tool" },
+        "capabilities": { "type": "array", "description": "Capabilities provided by this tool" },
+        "category": { "type": "string", "description": "Tool category" },
+        "isEnabled": { "type": "boolean", "description": "Whether this tool is active" },
+        "executionCount": { "type": "integer", "description": "Number of times executed" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["id", "userId", "name", "purpose", "category", "isEnabled", "executionCount", "createdAt"]
+    },
+    "OptimizationRecordDoc": {
+      "title": "OptimizationRecordDoc",
+      "description": "Record of a self-reorganization pass conducted by the AI.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique optimization ID" },
+        "userId": { "type": "string", "description": "Owner user identifier" },
+        "title": { "type": "string", "description": "Title of the optimization" },
+        "module": { "type": "string", "description": "Target module or component" },
+        "metricBefore": { "type": "string", "description": "Performance metrics prior to refactor" },
+        "metricAfter": { "type": "string", "description": "Performance metrics after refactor" },
+        "percentageGain": { "type": "string", "description": "Percentage improvement tag" },
+        "diffSnippet": { "type": "string", "description": "Code diff snippet" },
+        "explanation": { "type": "string", "description": "Detailed architectural rationale" },
+        "status": { "type": "string", "description": "Deployment status of the patch" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Execution timestamp" }
+      },
+      "required": ["id", "userId", "title", "module", "metricBefore", "metricAfter", "percentageGain", "diffSnippet", "explanation", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile documents"
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": { "$ref": "#/entities/ChatSessionDoc" },
+      "description": "User chat sessions"
+    },
+    "/users/{userId}/sessions/{sessionId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessageDoc" },
+      "description": "Messages belonging to a chat session"
+    },
+    "/users/{userId}/tools/{toolId}": {
+      "schema": { "$ref": "#/entities/AiToolDoc" },
+      "description": "User AI tool arsenal definitions"
+    },
+    "/users/{userId}/optimizations/{optimizationId}": {
+      "schema": { "$ref": "#/entities/OptimizationRecordDoc" },
+      "description": "Code self-optimization logs"
+    }
+  }
+}

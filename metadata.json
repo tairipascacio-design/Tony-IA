@@ -1,0 +1,6 @@
+{
+  "name": "Montana AI",
+  "description": "Cyberpunk luxury AI executive interface with Tony Montana persona, live screen casting, voice synthesis, Digital Ocean model runner, and self-optimizing code tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
